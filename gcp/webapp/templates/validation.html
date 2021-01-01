@@ -1,0 +1,124 @@
+{% extends 'base.html' %}
+{% load static %}
+
+
+{% block title %} Validation{% endblock title %}
+
+
+{% block page_title %} Validation Page
+{% endblock page_title %}
+
+
+{% block content %}
+{% for message in messages %}
+<div class="container mb-5">
+  <div class="alert alert-danger" role="alert">
+    {{message}}
+  </div>
+</div>
+  {% endfor %}
+<div class="row">
+  <div class="col-md-4">
+    <div class="card card-profile">
+      <div class="card-avatar">
+        <a href="javascript:;">
+          <img class="img" src=" {% static 'images/user_avtar.png' %}">
+        </a>
+      </div>
+      <div class="card-body">
+        <h6 class="card-category text-gray"></h6>
+        <h4 class="card-title">Update Record</h4>
+        <p class="card-description">
+          Click Below Button to Update Monthly Installment Record
+        </p>
+        <form action="/validation" method="POST">
+        {% csrf_token %}
+          <button type="submit" class="btn btn-primary pull-center" name="update_month">Update Record</button>
+        </form>
+
+      </div>
+    </div>
+  </div>
+  <div class="col-md-8">
+    <div class="card">
+      <div class="card-header card-header-primary">
+        <h4 class="card-title">Information</h4>
+        <p class="card-category">Ledger Information about Installments</p>
+      </div>
+      <div class="card-body">
+        <div class="card-body table-responsive">
+          <table class="table table-hover">
+            <thead class="text-warning">
+              <th>Ledger No.</th>
+              <th>Full Name</th>
+              <th>Primary Contact</th>
+              <th>Secondary Contact</th>
+              <th>Account Status</th>
+            </thead>
+            <tbody>
+              {% for data in table %}
+              <tr>
+                <td>{{data.user_id}}</td>
+                <td>{{data.full_name}}</td>
+                <td>{{data.primary_contact}}</td>
+                <td>{{data.secondary_contact}}</td>
+                <td>{{data.acc_status}}</td>
+
+              </tr>
+              {% endfor %}
+
+
+
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row">
+
+  <div class="col-md-12">
+    <div class="card">
+      <div class="card-header card-header-primary">
+        <h4 class="card-title">Information</h4>
+        <p class="card-category">Ledger Information about Installments</p>
+      </div>
+      <div class="card-body">
+        <div class="card-body table-responsive">
+          <table class="table table-hover">
+            <thead class="text-warning">
+              <th>Ledger No.</th>
+              <th>Total Amount</th>
+              <th>Received Amount</th>
+              <th>Pending Amount</th>
+              <th>Previous Advance</th>
+              <th>Previous Pending</th>
+              <th>Monthly Installment</th>
+              <th>Status</th>
+            </thead>
+            <tbody>
+              {% for data in table %}
+              <tr>
+                <td>{{data.user_id}}</td>
+                <td>{{data.total_amount}}</td>
+                <td>{{data.recieved_amount}}</td>
+                <td>{{data.pending_amount}}</td>
+                <td>{{data.temp_extra}}</td>
+                <td>{{data.temp_pending}}</td>
+                <td>{{data.monthly_installment}}</td>
+                <td>{{data.installment_status}}</td>
+
+              </tr>
+              {% endfor %}
+
+
+
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+  {% endblock content %}

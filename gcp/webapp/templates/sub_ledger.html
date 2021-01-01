@@ -1,0 +1,163 @@
+{% extends 'base.html' %}
+{% load static %}
+
+
+{% block title %} Sub Ledger {% endblock title %}
+
+{% block create_sub_ledger_nav %} active {% endblock create_sub_ledger_nav %}
+
+{% block page_title %} Sub Ledger
+{% endblock page_title %}
+{% block nav_color %} data-color="orange"
+{% endblock nav_color %} 
+
+{% block content %}
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-4">
+            <div class="card card-profile">
+                <div class="card-avatar">
+                    <a href="javascript:;">
+                        <img class="img" src=" {% static 'images/user_avtar.png' %}">
+                    </a>
+                </div>
+                <div class="card-body">
+                    <h6 class="card-category text-gray"></h6>
+                    <h4 class="card-title">Sub Ledger</h4>
+                    <p class="card-description">
+                        Sub Ledger store the Recurring Deposit (RD) information of the user which are linked to the account numbers.
+                    </p>
+
+                </div>
+            </div>
+        </div>
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header card-header-warning">
+                    <h4 class="card-title">Sub Ledger</h4>
+                    <p class="card-category">Create your Sub ledger</p>
+                </div>
+                <div class="card-body">
+                    {% if success %}
+                     <div class="alert alert-success" role="alert">
+                        {{success}} 
+                    </div>
+                    {% endif %}
+                    {% for message in messages %}
+                    <div class="alert alert-danger" role="alert">
+                        {{message}} 
+                    </div>
+                    {% endfor %}
+                    <form method="POST" action="/sub_ledger">
+                    {% csrf_token %}
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="bmd-label-floating">Ledger Number</label>
+                                    <input type="text" class="form-control" name="user_id" value="{{value}}" required>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <button type="submit" class="btn btn-warning" name="search">Search</button>
+                                </div>
+                            </div>
+                        </div>
+                       
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="bmd-label-floating">Sub Ledger Name</label>
+                                    <input type="text" class="form-control" name="sub_name">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="bmd-label-floating">Account Number</label>
+                                    <input type="text" class="form-control" name="acc_no">
+                                </div>
+                            </div>
+                            
+
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                 <div class="form-group">
+                                    <label class="bmd-label-floating"></label>
+                                    <input type="date" class="form-control" name="opening_date">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="bmd-label-floating">Installment</label>
+                                    <input type="text" class="form-control" name="installment">
+                                </div>
+                            </div>
+
+                        </div>
+                        <button type="submit" class="btn btn-warning pull-right" name="create">Create Ledger</button>
+                        <div class="clearfix"></div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header card-header-warning">
+                    <h4 class="card-title "> Sub Ledger Table</h4>
+                    <p class="card-category">List of Newly Created  Sub Ledger </p>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead class=" text-primary">
+                                <th>
+                                    User ID
+                                </th>
+                                <th>
+                                    Account Number
+                                </th>
+                                <th>
+                                    Sub Ledger Name
+                                </th>
+                                <th>
+                                    Starting Date
+                                </th>
+                                 <th>
+                                    Closing Date
+                                </th>
+                                 <th>
+                                    Installment
+                                </th>
+                                <th>
+                                    Total Amount
+                                </th>
+                            </thead>
+
+                            <tbody>
+                                {% for data in table%}
+                                <tr> 
+                                <td>{{data.new_ledger_id}}</td>
+                                <td>{{data.account_number}}</td>
+                                <td>{{data.sub_name}}</td>
+                                <td>{{data.opening_date}}</td>
+                                <td>{{data.closing_date}}</td>
+                                <td>{{data.installment}}</td>
+                                <td>{{data.total_amount}}</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+{% endblock content %}

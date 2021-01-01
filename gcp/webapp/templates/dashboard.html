@@ -1,0 +1,228 @@
+{% extends 'base.html' %}
+
+{% block title %} Dashboard {% endblock title %}
+
+{% block dashboard_nav %} active {% endblock dashboard_nav %}
+
+{% block page_title %} Dashboard {% endblock page_title %}
+
+{% block nav_color %} data-color="green"
+{% endblock nav_color %} 
+
+
+{% block content %}
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-lg-3 col-md-6 col-sm-6">
+      <div class="card card-stats">
+        <div class="card-header card-header-warning card-header-icon">
+          <div class="card-icon">
+            <i class="material-icons">account_balance</i>
+          </div>
+          <p class="card-category">Total RD Amount</p>
+          <h3 class="card-title">
+            {% if data %}
+            {{data.total_amount}}
+            {% endif %}
+            <small>INR</small>
+          </h3>
+        </div>
+        <div class="card-footer">
+          <div class="stats">
+            <i class="material-icons">date_range</i>Current Month
+          </div>
+        </div>
+
+      </div>
+    </div>
+    <div class="col-lg-3 col-md-6 col-sm-6">
+      <div class="card card-stats">
+        <div class="card-header card-header-success card-header-icon">
+          <div class="card-icon">
+            <i class="material-icons">savings</i>
+          </div>
+          <p class="card-category">Total Received Amount</p>
+          <h3 class="card-title">
+            {% if data %}
+            {{data.recieved_amount}}
+            {% endif %}
+            <small>INR</small></h3>
+        </div>
+        <div class="card-footer">
+          <div class="stats">
+            <i class="material-icons">date_range</i> Last 24 Hours
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-3 col-md-6 col-sm-6">
+      <div class="card card-stats">
+        <div class="card-header card-header-danger card-header-icon">
+          <div class="card-icon">
+            <i class="material-icons">pending</i>
+          </div>
+          <p class="card-category">Total Pending Amount</p>
+          <h3 class="card-title">
+            {% if data %}
+            {{data.pending_amount}}
+            {% endif %}
+            <small>INR</small>
+          </h3>
+        </div>
+        <div class="card-footer">
+          <div class="stats">
+            <i class="material-icons">local_offer</i> Tracked from Github
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-3 col-md-6 col-sm-6">
+      <div class="card card-stats">
+        <div class="card-header card-header-info card-header-icon">
+          <div class="card-icon">
+            <i class="material-icons">payment</i>
+          </div>
+          <p class="card-category">Installment</p>
+          <h3 class="card-title">
+            {% if data %}
+            {{data.monthly_installment}}
+            {% endif %}
+            <small>INR</small></h3>
+        </div>
+        <div class="card-footer">
+          <div class="stats">
+            <i class="material-icons">update</i> Just Updated
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <div class="row">
+    <div class="col-md-6">
+      <div class="card">
+        <div class="card-header card-header-primary">
+          <h4 class="card-title">Information</h4>
+          <p class="card-category">Ledger Information about Installments</p>
+        </div>
+        <div class="card-body">
+          <div class="card-body table-responsive">
+            <table class="table table-hover">
+              <thead class="text-warning">
+                <th>Previous Pending</th>
+                <th>Previous Advance</th>
+               <th>Total Payment</th>
+                <th>Account Status</th>
+              </thead>
+              <tbody>
+                {% if data %}
+                <tr>
+                  <td>{{data.temp_pending}}<small> INR</small></td>
+                  <td>{{data.temp_extra}}<small> INR</small></td>
+                  <td>{{total_payment}}</td>
+                  {% if data.installment_status %}
+                  <td class="font-weight-bold text-success">Success</td>
+                  {% else %}
+                  <td class="font-weight-bold text-danger">Pending</td>
+                  {% endif %}
+                  
+                </tr>
+                {% endif %}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="card">
+
+        <div class="card-header card-header-primary">
+          <h4 class="card-title">Make Receipt</h4>
+          <p class="card-category">Accept Monthly Installment of Ledger!</p>
+        </div>
+        <div class="card-body">
+          <form method="POST" action="/dashboard">
+            {% csrf_token %}
+            {% for message in messages %}
+            <div class="alert alert-danger" role="alert">
+            {{message}}
+            </div>
+            {% endfor %}
+            <div class="row">
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label class="bmd-label-floating">Ledger Number</label>
+                  <input type="text" class="form-control" name="ledger_no" value="{{usr_id}}" required>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="form-group">
+                  <button type="submit" class="btn btn-info" name="search">Search</button>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label class="bmd-label-floating">Installment</label>
+                  <input type="text" class="form-control" name="installment" value="{{install}}">
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label class="bmd-label-floating">Remark</label>
+                  <input type="text" class="form-control" name="addon" value="{{remark}}">
+                </div>
+              </div>
+            </div>
+
+
+            <button type="submit" class="btn btn-success pull-left" name="generate">Generate</button>
+            <div class="clearfix"></div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="row">
+    <div class="col-lg-12 col-md-12">
+      <div class="card">
+        <div class="card-header card-header-warning">
+          <h4 class="card-title">Pending Ledger</h4>
+          <p class="card-category">Pending amount of Current month</p>
+        </div>
+        <div class="card-body table-responsive">
+          <table class="table table-hover">
+            <thead class="text-warning">
+              <th>Ledger no. </th>
+              <th>Name</th>
+              <th>Installment</th>
+              <th>Contact no.</th>
+            </thead>
+            <tbody>
+              {% for new_ledger in table%}
+              <tr>
+                <td>{{new_ledger.user_id}}</td>
+                <td>{{new_ledger.full_name}}</td>
+                <td>{{new_ledger.monthly_installment}}</td>
+                <td><a href="tel:{{new_ledger.primary_contact}}">{{new_ledger.primary_contact}}</a></td>
+              </tr>
+              {% endfor %}
+
+
+
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+{% endblock content %}

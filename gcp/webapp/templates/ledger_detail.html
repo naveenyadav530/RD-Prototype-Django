@@ -1,0 +1,162 @@
+{% extends 'base.html' %}
+{% load static %}
+
+
+{% block title %} Ledger Detail {% endblock title %}
+
+{% block ledger_detail %} active {% endblock ledger_detail %}
+
+{% block nav_color %} data-color="azure"
+<!--purple | azure | green | orange | danger-->
+{% endblock nav_color %}
+
+{% block page_title %} Ledger Detail
+{% endblock page_title %}
+{% block content %}
+
+<div class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header card-header-info">
+                        <h4 class="card-title ">Search</h4>
+                        <p class="card-category">Search Ledger by ledger number and mobile number</p>
+                    </div>
+                    <div class="card-body">
+                       
+                            <form action="/ledger_detail" method="POST">
+                                {% csrf_token %}
+                                <div class="row">
+                                    <div class="col-sm">
+                                        <div class="form-group">
+                                            <label class="bmd-label-floating">Ledger No.</label>
+                                            <input type="text" class="form-control" name="ledger" value="{{search_value}}">
+                                        </div>
+                                    </div>
+                                    <div class="col-sm">
+                                        <button type="submit" class="btn btn-outline-warning"
+                                            name="ledger_no">Search</button>
+                                    </div>
+                                   
+
+                                </div>
+                            </form>
+                       
+                    </div>
+                </div>
+                {% for message in messages %}
+                <div class="alert alert-danger" role="alert">
+                    {{message}} 
+                </div>
+                {% endfor %}
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header card-header-warning">
+                    <h4 class="card-title "> Sub Ledger Table</h4>
+                    <p class="card-category">List of Newly Created Sub Ledger </p>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead class=" text-primary">
+                                <th>
+                                    ID
+                                </th>
+                                <th>
+                                    Account Number
+                                </th>
+                                <th>
+                                    Sub Ledger Name
+                                </th>
+                                <th>
+                                    Starting Date
+                                </th>
+                                <th>
+                                    Closing Date
+                                </th>
+                                <th>
+                                    Installment
+                                </th>
+                                <th>
+                                    Total Amount
+                                </th>
+                            </thead>
+
+                            <tbody>
+                                {% for data in table1%}
+                                <tr>
+                                    <td>{{data.id}}</td>
+                                    <td>{{data.account_number}}</td>
+                                    <td>{{data.sub_name}}</td>
+                                    <td>{{data.opening_date}}</td>
+                                    <td>{{data.closing_date}}</td>
+                                    <td>{{data.installment}}</td>
+                                    <td>{{data.total_amount}}</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header card-header-success">
+                    <h4 class="card-title "> Receipt Table</h4>
+                    <p class="card-category">List of monthly receipt of ledger </p>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead class=" text-primary">
+                                <th>
+                                    ID
+                                </th>
+                                <th>
+                                    Installment
+                                </th>
+                                <th>
+                                    Remark
+                                </th>
+                                <th>
+                                    Receipt Date
+                                </th>
+
+                            </thead>
+
+                            <tbody>
+                                {% for data in table2%}
+                                <tr>
+                                    <td>{{data.id}}</td>
+                                    <td>{{data.installment_payment}}</td>
+                                    <td>{{data.remark}}</td>
+                                    <td>{{data.receipt_date}}</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+{% endblock content %}

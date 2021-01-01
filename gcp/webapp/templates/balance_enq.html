@@ -1,0 +1,136 @@
+{% extends 'base.html' %}
+{% load static %}
+
+
+{% block title %} Balance Enquiry {% endblock title %}
+
+{% block balance_enq %} active
+{% endblock balance_enq %}
+
+{% block nav_color %} data-color="azure"
+{% endblock nav_color %} 
+{% block page_title %} Balance Enquiry
+{% endblock page_title %}
+{% block content %}
+<div class="container-fluid">
+
+  <div class="row">
+    <div class="col-lg-3 col-md-6 col-sm-6">
+      <div class="card card-stats">
+        <div class="card-header card-header-warning card-header-icon">
+          <div class="card-icon">
+            <i class="material-icons">account_balance</i>
+          </div>
+          <p class="card-category">Total RD Amount</p>
+          <h3 class="card-title">
+            {% if total_amount %}
+            {{total_amount}}
+            {% endif %}
+            <small>INR</small>
+          </h3>
+        </div>
+        <div class="card-footer">
+          <div class="stats">
+            <i class="material-icons">date_range</i>Current Month
+          </div>
+        </div>
+
+      </div>
+    </div>
+    <div class="col-lg-3 col-md-6 col-sm-6">
+      <div class="card card-stats">
+        <div class="card-header card-header-success card-header-icon">
+          <div class="card-icon">
+            <i class="material-icons">savings</i>
+          </div>
+          <p class="card-category">Total Received Amount</p>
+          <h3 class="card-title">
+            {% if total_received %}
+            {{total_received}}
+            {% endif %}
+            <small>INR</small></h3>
+        </div>
+        <div class="card-footer">
+          <div class="stats">
+            <i class="material-icons">date_range</i> Last 24 Hours
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-3 col-md-6 col-sm-6">
+      <div class="card card-stats">
+        <div class="card-header card-header-danger card-header-icon">
+          <div class="card-icon">
+            <i class="material-icons">pending</i>
+          </div>
+          <p class="card-category">Total Pending Amount</p>
+          <h3 class="card-title">
+            {% if total_pending %}
+            {{total_pending}}
+            {% endif %}
+            <small>INR</small>
+          </h3>
+        </div>
+        <div class="card-footer">
+          <div class="stats">
+            <i class="material-icons">local_offer</i> Tracked from Github
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-12">
+      <div class="card">
+        <div class="card-header card-header-success">
+          <h4 class="card-title "> Balance Table</h4>
+          <p class="card-category">Balance Sheet of ledger </p>
+        </div>
+        <div class="card-body">
+          <div class="table-responsive">
+            <table class="table">
+              <thead class=" text-primary">
+                <th>
+                  Ledger
+                </th>
+                <th>
+                  Contact
+                </th>
+                <th>
+                  Total Amount
+                </th>
+                <th>
+                  Received Amount
+                </th>
+                <th>
+                  Pending Amount
+                </th>
+                <th>
+                  Monthly Installment
+                </th>
+
+
+              </thead>
+
+              <tbody>
+                {% for data in table%}
+                <tr>
+                  <td>{{data.user_id}}</td>
+                  <td>{{data.primary_contact}}</td>
+                  <td>{{data.total_amount}}</td>
+                  <td>{{data.recieved_amount}}</td>
+                  <td>{{data.pending_amount}}</td>
+                  <td>{{data.monthly_installment}}</td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+{% endblock content %}

@@ -1,0 +1,83 @@
+{% extends 'base.html' %}
+{% load static %}
+
+
+{% block title %} Profile{% endblock title %}
+
+
+{% block page_title %} Profile
+{% endblock page_title %}
+
+
+{% block content %}
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-4">
+            <div class="card card-profile">
+                <div class="card-avatar">
+                    <a href="javascript:;">
+                        <img class="img" src=" {% static 'images/user_avtar.png' %}">
+                    </a>
+                </div>
+                <div class="card-body">
+                    <h6 class="card-category text-gray"></h6>
+                    <h4 class="card-title">
+                        {% if username %}
+                        {{username}}
+                        {% endif %}
+                    </h4>
+                    <p class="card-description">
+                        Welcome {% if full_name %}{{full_name}}{% else %} User {% endif %}<br>
+                        {% if email_id %}{{email_id}}{% endif %}
+                    </p>
+                   
+
+                </div>
+            </div>
+        </div>
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header card-header-primary">
+                    <h4 class="card-title">Change Password</h4>
+                    <p class="card-category">Change Your Old Password</p>
+                </div>
+                <div class="card-body">
+                    <!-- Form to create new Ledger -->
+
+                    {% for message in messages %}
+                    <div class="alert alert-danger" role="alert">
+                        {{message}}
+                    </div>
+                    {% endfor %}
+
+
+                    <form action="/profile" method="POST">
+                        {% csrf_token %}
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="bmd-label-floating">New Password</label>
+                                    <input type="password" class="form-control" name="new_password" required>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="bmd-label-floating">Confirm Password</label>
+                                    <input type="password" class="form-control" name="confirm_password" required>
+                                </div>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-primary pull-right">Change</button>
+                        <div class="clearfix"></div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{% endblock content %}

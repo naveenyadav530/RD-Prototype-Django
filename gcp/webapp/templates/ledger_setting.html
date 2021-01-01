@@ -1,0 +1,340 @@
+{% extends 'base.html' %}
+{% load static %}
+
+
+{% block title %} Ledger Setting {% endblock title %}
+
+{% block ledger_setting %} active
+{% endblock ledger_setting %}
+{% block nav_color %} data-color="orange"
+{% endblock nav_color %} 
+
+{% block page_title %} Ledger Setting
+{% endblock page_title %}
+
+{% block content %}
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-6">
+            <div class="card card-profile">
+                <div class="card-avatar">
+                    <a href="javascript:;">
+                        <img class="img" src=" {% static 'images/user_avtar.png' %}">
+                    </a>
+                </div>
+                <div class="card-body">
+                    <h6 class="card-category text-gray"></h6>
+                    <h4 class="card-title">{{new_ledger.full_name}} </h4>
+                    <p class="card-description">
+                    <table class="table table-hover">
+                        <thead class="text-warning">
+                            <th>Ledger no. </th>
+                            <th>Address</th>
+                            <th>Primary Contact</th>
+                            <th>Secondary Contact</th>
+                        </thead>
+                        <tbody>
+                            {% if new_ledger %}
+                            <tr>
+                                <td>{{new_ledger.user_id}}</td>
+                                <td>{{new_ledger.address}}</td>
+                                <td> <a href="tel:{{new_ledger.primary_contact}}">{{new_ledger.primary_contact}}</a>
+                                </td>
+                                <td><a href="tel:{{new_ledger.secondary_contact}}">{{new_ledger.secondary_contact}}</a>
+                                </td>
+                            </tr>
+                            {% endif %}
+                        </tbody>
+                    </table>
+                    </p>
+
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header card-header-primary">
+                    <h4 class="card-title">Ledger Setting</h4>
+                    <p class="card-category">Update or Delete Ledger accounts</p>
+                </div>
+                <div class="card-body">
+                    <!-- Form to create new Ledger -->
+
+                    {% for message in messages %}
+                    <div class="alert alert-danger" role="alert">
+                        {{message}}
+                    </div>
+                    {% endfor %}
+
+
+                    <form action="/ledger_setting" method="POST">
+                        {% csrf_token %}
+
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label class="bmd-label-floating">Ledger No.</label>
+                                    <input type="text" class="form-control" name="ledger" value="{{new_ledger.user_id}}"
+                                        required>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <button type="submit" class="btn btn-info" name="search">Search</button>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label class="bmd-label-floating">Full Name</label>
+                                    <input type="text" class="form-control" name="full_name">
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <button type="submit" class="btn btn-warning" name="name_update">Update</button>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label class="bmd-label-floating">Address</label>
+                                    <input type="text" class="form-control" name="address">
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <button type="submit" class="btn btn-warning" name="address_update">Update</button>
+                            </div>
+
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label class="bmd-label-floating">Primary Contact</label>
+                                    <input type="text" class="form-control" name="primary_contact">
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <button type="submit" class="btn btn-warning" name="primary_update">Update</button>
+                            </div>
+
+
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label class="bmd-label-floating">Secondary Contact</label>
+                                    <input type="text" class="form-control" name="secondary_contact">
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <button type="submit" class="btn btn-warning" name="secondary_update">Update</button>
+                            </div>
+
+
+                        </div>
+                        <div class="row mt-5">
+                            <div class="col-md-4">
+                                Account Status:
+                            </div>
+                            <div class="col-md-4">
+
+                                {% if new_ledger.acc_status %}
+                                <h4 style="font-weight: bold;" class="text-success">Open</h4>
+                                {% else %}
+                                <h4 style="font-weight: bold;" class="text-danger">Close </h4>
+                                {% endif %}
+                            </div>
+                            <div class="col-md-4">
+                                <!-- Button trigger modal -->
+                                <button type="button" class="btn btn-danger" data-toggle="modal"
+                                    data-target="#delete_new">
+                                    Delete
+                                </button>
+
+                                <!-- Modal -->
+                                <div class="modal fade" id="delete_new" tabindex="-1" aria-labelledby="delete_newLabel"
+                                    aria-hidden="true">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="delete_newLabel">Delete New Ledger</h5>
+                                                <button type="button" class="close" data-dismiss="modal"
+                                                    aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
+                                            <div class="modal-body">
+                                                This Ledger will be Deleted Permanently
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary"
+                                                    data-dismiss="modal">Close</button>
+                                                <button type="submit" class="btn btn-danger"
+                                                    name="delete_account">Delete Permanently</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+
+
+                        </div>
+
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header card-header-warning">
+                    <h4 class="card-title">Sub-Ledger Setting</h4>
+                    <p class="card-category">Update or Delete Sub-Ledger accounts</p>
+                </div>
+                <div class="card-body">
+                    <h6 class="card-category text-gray"></h6>
+                    <h4 class="card-title"></h4>
+                    <p class="card-description">
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead class="text-warning">
+                                <th>Sub Name</th>
+                                <th>Account no. </th>
+                                <th>Opening Date</th>
+                                <th>Closing Date</th>
+                                <th>Installment</th>
+                                <th>Total Amount</th>
+                                <th>Update</th>
+
+                                <th>Delete</th>
+                            </thead>
+                            <tbody>
+                                {% for sub_ledger in table %}
+                                <tr>
+                                <td>{{sub_ledger.sub_name}}
+                                    <td value="{{sub_ledger.account_number}}">
+                                        {{sub_ledger.account_number}}</td>
+
+                                    <td>{{sub_ledger.opening_date}}</td>
+                                    <td>{{sub_ledger.closing_date}}</td>
+                                    <td>{{sub_ledger.installment}}</td>
+                                    <td>{{sub_ledger.total_amount}}</td>
+                                      <form action="/ledger_setting" method="POST">
+                                        {% csrf_token %}
+                                        <td>
+                                            <button type="button" class="btn btn-warning" data-toggle="modal"
+                                                data-target="#up_sub">
+                                                Update
+                                            </button>
+
+                                            <!-- Modal -->
+                                            <div class="modal fade" id="up_sub" tabindex="-1"
+                                                aria-labelledby="up_subLabel" aria-hidden="true">
+                                                <div class="modal-dialog">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h5 class="modal-title" id="up_subLabel">Update Account Number</h5>
+                                                            <button type="button" class="close" data-dismiss="modal"
+                                                                aria-label="Close">
+                                                                <span aria-hidden="true">&times;</span>
+                                                            </button>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            <div class="form-group">
+                                                                <label class="bmd-label-floating">Old Account
+                                                                    Number</label>
+                                                                <input type="text" class="form-control"
+                                                                    name="acc_no1" required>
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <label class="bmd-label-floating">New Account
+                                                                    Number</label>
+                                                                <input type="text" class="form-control"
+                                                                    name="acc_no2" required>
+                                                            </div>
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="btn btn-secondary"
+                                                                data-dismiss="modal">Close</button>
+                                                            <button type="submit" class="btn btn-warning"
+                                                                name="update_acc">Update</button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </td>
+
+                                    </form>
+                                    <form action="/ledger_setting" method="POST">
+                                        {% csrf_token %}
+                                        <td>
+                                            <button type="button" class="btn btn-danger" data-toggle="modal"
+                                                data-target="#delete_sub">
+                                                Delete
+                                            </button>
+
+                                            <!-- Modal -->
+                                            <div class="modal fade" id="delete_sub" tabindex="-1"
+                                                aria-labelledby="delete_subLabel" aria-hidden="true">
+                                                <div class="modal-dialog">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h5 class="modal-title" id="delete_subLabel">Delete Sub
+                                                                Ledger</h5>
+                                                            <button type="button" class="close" data-dismiss="modal"
+                                                                aria-label="Close">
+                                                                <span aria-hidden="true">&times;</span>
+                                                            </button>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            <div class="form-group">
+                                                                <label class="bmd-label-floating">Enter Account
+                                                                    Number</label>
+                                                                <input type="text" class="form-control"
+                                                                    name="acc_number" required>
+                                                            </div>
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="btn btn-secondary"
+                                                                data-dismiss="modal">Close</button>
+                                                            <button type="submit" class="btn btn-danger"
+                                                                name="delete_acc">Delete Permanently</button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </td>
+
+                                    </form>
+
+
+                                  
+
+                                </tr>
+                                {% endfor %}
+
+
+                            </tbody>
+                        </table>
+                    </div>
+                    </p>
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+{% endblock content %}

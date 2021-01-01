@@ -1,0 +1,214 @@
+{% extends 'base.html' %}
+{% load static %}
+
+
+{% block title %} Close Account{% endblock title %}
+
+{% block close_account %}active
+{% endblock close_account %}
+
+{% block nav_color %} data-color="danger"
+{% endblock nav_color %}
+
+{% block page_title %} Close Account
+{% endblock page_title %}
+
+{% block content %}
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header card-header-success">
+                    <h4 class="card-title ">New Ledger</h4>
+                    <p class="card-category">List of all Closed New Ledger.</p>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        {% for message in messages %}
+                        <div class="alert alert-danger" role="alert">
+                            {{message}} 
+                        </div>
+                        {% endfor %}
+    
+                        <table class="table">
+                            <thead class=" text-primary">
+                                <th>
+                                    Ledger No.
+                                </th>
+                                <th>
+                                    Full Name
+                                </th>
+                                <th>
+                                    Address
+                                </th>
+                                <th>
+                                    Primary Contact
+                                </th>
+                                <th>
+                                    Secondary Contact
+                                </th>
+                                <th>
+                                    Delete Ledger
+                                </th>
+
+                            </thead>
+
+                            <tbody>
+                                {% for data in table%}
+                                <tr>
+                                    <td>{{data.user_id}}</td>
+                                    <td>{{data.full_name}}</td>
+                                    <td>{{data.address}}</td>
+                                    <td>{{data.primary_contact}}</td>
+                                    <td>{{data.secondary_contact}}</td>
+                                    <form action="/close_account" method="POST">
+                                        {% csrf_token %}
+                                        <td>
+                                            <button type="button" class="btn btn-danger" data-toggle="modal"
+                                                data-target="#delete_new">
+                                               Delete Permanently
+                                            </button>
+
+                                            <!-- Modal -->
+                                            <div class="modal fade" id="delete_new" tabindex="-1"
+                                                aria-labelledby="delete_newLabel" aria-hidden="true">
+                                                <div class="modal-dialog">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h5 class="modal-title" id="delete_newLabel">Delete Account Permanently</h5>
+                                                            <button type="button" class="close" data-dismiss="modal"
+                                                                aria-label="Close">
+                                                                <span aria-hidden="true">&times;</span>
+                                                            </button>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            <div class="form-group">
+                                                                <label class="bmd-label-floating">Confirm Ledger No.</label>
+                                                                <input type="text" class="form-control"
+                                                                    name="ledger_no" required>
+                                                            </div>
+                                                            
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="btn btn-secondary"
+                                                                data-dismiss="modal">Close</button>
+                                                            <button type="submit" class="btn btn-danger"
+                                                                name="delete_ledger">Delete</button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </td>
+
+                                    </form>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header card-header-warning">
+                    <h4 class="card-title ">Sub Ledger</h4>
+                    <p class="card-category">List of all Closed Sub Ledger.</p>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead class=" text-primary">
+                                <th>
+                                    Ledger No.
+                                </th>
+                                <th>
+                                    Account No.
+                                </th>
+                                <th>
+                                    Sub Name
+                                </th>
+                                <th>
+                                    Closing Date
+                                </th>
+                                <th>
+                                    Monthly Installment
+                                </th>
+                                <th>
+                                    Close Account
+                                </th>
+
+                            </thead>
+
+                            <tbody>
+                                
+                                    {% for data in table1%}
+                                    <tr>
+                                        <td>{{data.new_ledger_id}}</td>
+                                        <td>{{data.account_number}}</td>
+                                        <td>{{data.sub_name}}</td>
+                                        <td>{{data.closing_date}}</td>
+                                        <td>{{data.installment}}</td>
+                                        <form action="/close_account" method="POST">
+                                            {% csrf_token %}
+                                            <td>
+                                                <button type="button" class="btn btn-danger" data-toggle="modal"
+                                                    data-target="#delete_sub">
+                                                    Delete Permanently
+                                                </button>
+    
+                                                <!-- Modal -->
+                                                <div class="modal fade" id="delete_sub" tabindex="-1"
+                                                    aria-labelledby="delete_subLabel" aria-hidden="true">
+                                                    <div class="modal-dialog">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header">
+                                                                <h5 class="modal-title" id="delete_subLabel">Delete Account Permanentyly</h5>
+                                                                <button type="button" class="close" data-dismiss="modal"
+                                                                    aria-label="Close">
+                                                                    <span aria-hidden="true">&times;</span>
+                                                                </button>
+                                                            </div>
+                                                            <div class="modal-body">
+                                                                <div class="form-group">
+                                                                    <label class="bmd-label-floating">Confirm Account
+                                                                        Number</label>
+                                                                    <input type="text" class="form-control"
+                                                                        name="acc_no" required>
+                                                                </div>
+                                                                
+                                                            </div>
+                                                            <div class="modal-footer">
+                                                                <button type="button" class="btn btn-secondary"
+                                                                    data-dismiss="modal">Close</button>
+                                                                <button type="submit" class="btn btn-danger"
+                                                                    name="delete_sub">Delete</button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </td>
+    
+                                        </form>
+                                    </tr>
+                                    {% endfor %}
+                                
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+{% endblock content %}
